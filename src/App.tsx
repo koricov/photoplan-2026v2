@@ -6,6 +6,7 @@ import { PhotoGrid } from "./components/PhotoGrid/PhotoGrid";
 import { MapCard } from "./components/MapCard/MapCard";
 import { Lightbox } from "./components/Lightbox/Lightbox";
 import { Footer } from "./components/Footer/Footer";
+import { BackToTop } from "./components/BackToTop/BackToTop";
 import styles from "./App.module.css";
 
 const PROPERTY_ADDRESS = "2689 Irving St, Denver, CO 80211";
@@ -40,6 +41,7 @@ function App() {
         </div>
       </div>
       <Footer />
+      <BackToTop />
       <Lightbox
         photos={photos}
         currentIndex={lightbox.currentIndex}
