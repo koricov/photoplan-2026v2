@@ -51,6 +51,25 @@
   background-color: var(--color-border);
 }
 
+.tourBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--space-md);
+  padding: 8px 20px;
+  border-radius: 20px;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color var(--transition-fast);
+}
+
+.tourBtn:hover {
+  opacity: 0.9;
+}
+
 @media (min-width: 768px) {
   .title {
     font-size: 2rem;
