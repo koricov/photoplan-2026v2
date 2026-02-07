@@ -1,17 +1,14 @@
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: var(--space-md);
-  padding: 0 var(--space-xl) var(--space-lg);
+  padding: 20px var(--space-xl) var(--space-lg);
   max-width: 1440px;
   margin: 0 auto;
 }
 
-@media (min-width: 1024px) {
-  .topRow {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: var(--space-md);
-  }
+.grid > * {
+  flex: 0 0 calc((100% - 3 * var(--space-md)) / 4);
+  min-width: 280px;
 }

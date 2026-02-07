@@ -9,6 +9,8 @@ import { Footer } from "./components/Footer/Footer";
 import styles from "./App.module.css";
 
 const PROPERTY_ADDRESS = "2689 Irving St, Denver, CO 80211";
+const TOUR_URL =
+  "https://www.zillow.com/view-imx/359fd819-4b77-4998-873e-17792e16a6e0?setAttribution=mls&wl=true&initialViewType=pano&utm_source=dashboard";
 
 function App() {
   const photoRefs = useRef<Map<number, HTMLButtonElement>>(new Map());
@@ -21,8 +23,22 @@ function App() {
         photos={photos}
         onPhotoClick={lightbox.open}
         photoRefs={photoRefs}
-        mapSlot={<MapCard address={PROPERTY_ADDRESS} />}
       />
+      <div className={styles.mapTourRow}>
+        <div className={styles.mapTourCard}>
+          <MapCard address={PROPERTY_ADDRESS} />
+        </div>
+        <div className={styles.mapTourCard}>
+          <div className={styles.tourEmbed}>
+            <iframe
+              className={styles.tourIframe}
+              src={TOUR_URL}
+              title="3D Tour"
+              allowFullScreen
+            />
+          </div>
+        </div>
+      </div>
       <Footer />
       <Lightbox
         photos={photos}
