@@ -3,28 +3,23 @@
 }
 
 .mapTourRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
   max-width: 1440px;
   margin: 0 auto;
-  padding: 0 var(--space-xl) var(--space-lg);
-}
-
-@media (max-width: 768px) {
-  .mapTourRow {
-    grid-template-columns: 1fr;
-  }
+  padding: var(--space-lg) var(--space-xl) var(--space-lg);
 }
 
 .mapTourCard {
-  min-height: 0;
+  scroll-margin-top: 120px;
 }
 
 .tourEmbed {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 16 / 9;
+  height: 720px;
+  scroll-margin-top: 90px;
   box-shadow: var(--shadow-sm);
 }
 

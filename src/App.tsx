@@ -25,11 +25,11 @@ function App() {
         photoRefs={photoRefs}
       />
       <div className={styles.mapTourRow}>
-        <div className={styles.mapTourCard}>
+        <div id="map" className={styles.mapTourCard}>
           <MapCard address={PROPERTY_ADDRESS} />
         </div>
         <div className={styles.mapTourCard}>
-          <div className={styles.tourEmbed}>
+          <div id="tour" className={styles.tourEmbed}>
             <iframe
               className={styles.tourIframe}
               src={TOUR_URL}

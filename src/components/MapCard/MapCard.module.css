@@ -1,7 +1,7 @@
 .card {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 16 / 9;
+  height: 480px;
   box-shadow: var(--shadow-sm);
 }
 

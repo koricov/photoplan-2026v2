@@ -1,15 +1,12 @@
 import styles from "./Header.module.css";
 
-const TOUR_URL =
-  "https://www.zillow.com/view-imx/359fd819-4b77-4998-873e-17792e16a6e0?setAttribution=mls&wl=true&initialViewType=pano&utm_source=dashboard";
-
 export function Header() {
   return (
     <header className={styles.sticky}>
       <div className={styles.inner}>
         <div className={styles.bar}>
           <div className={styles.left}>
-            <a href="https://www.google.com/maps/search/?api=1&query=2689+Irving+St+Denver+CO+80211" target="_blank" rel="noopener noreferrer" className={styles.title}>
+            <a href="#map" className={styles.title}>
               2689 Irving St, Denver, CO 80211
               <svg className={styles.externalIcon} width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M7 17L17 7" />
@@ -32,9 +29,7 @@ export function Header() {
             </svg>
           </a>
           <a
-            href={TOUR_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href="#tour"
             className={styles.tourBtn}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
