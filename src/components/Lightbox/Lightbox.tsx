@@ -1,5 +1,12 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 import type { Photo } from "../../types/photo";
+import {
+  ROOM_TYPES,
+  STYLES,
+  detectRoomType,
+  stagePhoto,
+} from "../../services/virtualStaging";
+import type { RoomType, Style } from "../../services/virtualStaging";
 import styles from "./Lightbox.module.css";
 
 const GAP = 20;
@@ -31,9 +38,28 @@ export function Lightbox({
   const currentIndexRef = useRef(currentIndex);
   const photosRef = useRef(photos);
 
+  // Virtual staging state
+  const [stagedUrls, setStagedUrls] = useState<Map<number, string>>(new Map());
+  const [showStaged, setShowStaged] = useState(false);
+  const [showPanel, setShowPanel] = useState(false);
+  const [isStaging, setIsStaging] = useState(false);
+  const [stageError, setStageError] = useState<string | null>(null);
+  const [selectedRoom, setSelectedRoom] = useState<RoomType>("living");
+  const [selectedStyle, setSelectedStyle] = useState<Style>("modern");
+
   // Keep refs in sync with props
   currentIndexRef.current = currentIndex;
   photosRef.current = photos;
+
+  // Reset staging UI on slide navigation
+  useEffect(() => {
+    setShowPanel(false);
+    setStageError(null);
+    // If this photo has been staged, show staged by default; otherwise original
+    setShowStaged(stagedUrls.has(currentIndex));
+    // Auto-detect room type from alt text
+    setSelectedRoom(detectRoomType(photos[currentIndex]?.alt ?? ""));
+  }, [currentIndex, photos, stagedUrls]);
 
   // Fullscreen
   useEffect(() => {
@@ -207,12 +233,69 @@ export function Lightbox({
     return () => { images.forEach((img) => { img.src = ""; }); };
   }, [isOpen, currentIndex, photos]);
 
+  // Toggle between original/staged via DOM (matches existing strip pattern)
+  const applyToggle = useCallback((staged: boolean) => {
+    const strip = stripRef.current;
+    if (!strip) return;
+    const centerImg = strip.querySelectorAll("img")[1];
+    if (!centerImg) return;
+
+    const idx = currentIndexRef.current;
+    const stagedUrl = stagedUrls.get(idx);
+    if (staged && stagedUrl) {
+      centerImg.src = stagedUrl;
+    } else {
+      centerImg.src = photosRef.current[idx].fullUrl;
+    }
+    setShowStaged(staged);
+  }, [stagedUrls]);
+
+  // Handle staging request
+  const handleStageIt = useCallback(async () => {
+    setIsStaging(true);
+    setShowPanel(false);
+    setStageError(null);
+
+    const photo = photosRef.current[currentIndexRef.current];
+    const imageUrl = `${window.location.origin}${photo.fullUrl}`;
+
+    try {
+      const result = await stagePhoto(imageUrl, selectedRoom, selectedStyle);
+      const idx = currentIndexRef.current;
+      setStagedUrls((prev) => {
+        const next = new Map(prev);
+        next.set(idx, result.result_image_url);
+        return next;
+      });
+      // Show the staged result immediately via DOM
+      const strip = stripRef.current;
+      if (strip) {
+        const centerImg = strip.querySelectorAll("img")[1];
+        if (centerImg) centerImg.src = result.result_image_url;
+      }
+      setShowStaged(true);
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "Staging failed";
+      setStageError(msg);
+    } finally {
+      setIsStaging(false);
+    }
+  }, [selectedRoom, selectedStyle]);
+
+  // Auto-dismiss error toast
+  useEffect(() => {
+    if (!stageError) return;
+    const timer = setTimeout(() => setStageError(null), 3000);
+    return () => clearTimeout(timer);
+  }, [stageError]);
+
   if (!isOpen) {
     return <div ref={containerRef} className={styles.viewer} />;
   }
 
   const prevIdx = (currentIndex - 1 + photos.length) % photos.length;
   const nextIdx = (currentIndex + 1) % photos.length;
+  const hasStaged = stagedUrls.has(currentIndex);
 
   return (
     <div ref={containerRef} className={`${styles.viewer} ${styles.viewerOpen}`}>
@@ -254,6 +337,96 @@ export function Lightbox({
             <polyline points="9 18 15 12 9 6" />
           </svg>
         </button>
+
+        {/* Virtual Stage button */}
+        {!isStaging && (
+          <button
+            className={styles.stageBtn}
+            onClick={() => setShowPanel((v) => !v)}
+            type="button"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" />
+              <path d="M9 3v18" />
+              <path d="M3 9h6" />
+            </svg>
+            Virtual Stage
+          </button>
+        )}
+
+        {/* Selection panel */}
+        {showPanel && (
+          <div className={styles.stagePanel}>
+            <label>
+              Room Type
+              <select
+                value={selectedRoom}
+                onChange={(e) => setSelectedRoom(e.target.value as RoomType)}
+              >
+                {ROOM_TYPES.map((rt) => (
+                  <option key={rt.value} value={rt.value}>
+                    {rt.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label>
+              Style
+              <select
+                value={selectedStyle}
+                onChange={(e) => setSelectedStyle(e.target.value as Style)}
+              >
+                {STYLES.map((s) => (
+                  <option key={s.value} value={s.value}>
+                    {s.label}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <button
+              className={styles.stageItBtn}
+              onClick={handleStageIt}
+              type="button"
+            >
+              Stage It
+            </button>
+          </div>
+        )}
+
+        {/* Loading overlay */}
+        {isStaging && (
+          <div className={styles.stagingOverlay}>
+            <div className={styles.spinner} />
+            <span>Staging...</span>
+          </div>
+        )}
+
+        {/* Original / Staged toggle */}
+        {hasStaged && !isStaging && (
+          <div className={styles.toggleControl}>
+            <button
+              className={`${styles.toggleOption} ${!showStaged ? styles.toggleActive : ""}`}
+              onClick={() => applyToggle(false)}
+              type="button"
+            >
+              Original
+            </button>
+            <button
+              className={`${styles.toggleOption} ${showStaged ? styles.toggleActive : ""}`}
+              onClick={() => applyToggle(true)}
+              type="button"
+            >
+              Staged
+            </button>
+          </div>
+        )}
+
+        {/* Error toast */}
+        {stageError && (
+          <div className={styles.errorToast} key={stageError}>
+            {stageError}
+          </div>
+        )}
       </div>
     </div>
   );
