@@ -1,0 +1,145 @@
+.viewer {
+  display: none;
+  background: #000;
+  color: #fff;
+}
+
+.viewerOpen {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+.topBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-md) 60px;
+  z-index: 20;
+}
+
+.counter {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  opacity: 0.8;
+}
+
+.closeBtn {
+  color: #fff;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color var(--transition-fast);
+}
+
+.closeBtn:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.closeBtn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+.imageArea {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+/* The strip holds prev/current/next side by side */
+.strip {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.image {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+
+.caption {
+  position: absolute;
+  bottom: var(--space-md);
+  width: 100%;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: rgba(240, 240, 240, 0.85);
+  z-index: 10;
+  pointer-events: none;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+}
+
+.navBtn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  color: #fff;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.3);
+  transition: background-color var(--transition-fast);
+}
+
+.prevBtn {
+  left: 80px;
+}
+
+.nextBtn {
+  right: 80px;
+}
+
+.navBtn:hover:not(:disabled) {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.navBtn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .topBar {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .prevBtn {
+    left: var(--space-sm);
+  }
+
+  .nextBtn {
+    right: var(--space-sm);
+  }
+
+  .navBtn {
+    width: 40px;
+    height: 40px;
+  }
+}

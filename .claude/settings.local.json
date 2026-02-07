@@ -1,0 +1,40 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 remote -v)",
+      "Bash(gh repo create:*)",
+      "Bash(brew install:*)",
+      "Bash(gh auth status:*)",
+      "Bash(npm install:*)",
+      "Bash(vercel login:*)",
+      "Bash(vercel:*)",
+      "Bash(npm run build:*)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 status)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 diff)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 log --oneline -3)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 add .gitignore src/components/Lightbox/Lightbox.tsx src/components/Lightbox/Lightbox.module.css)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 commit -m \"$\\(cat <<''EOF''\nAdd crossfade transition between lightbox photos\n\nOld photo fades out while new one fades in simultaneously over 300ms,\neliminating the hard cut when navigating. Also tracks full-res loaded\nstate per photo so revisited images don''t re-flash the thumbnail.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 push)",
+      "Bash(gh auth:*)",
+      "Bash(gh api:*)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 config user.email \"koricov@users.noreply.github.com\")",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 config user.name \"koricov\")",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 commit --amend --reset-author --no-edit)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 push --force-with-lease)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 diff -- src/)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 add public/photos/ src/data/photos.ts src/components/Lightbox/Lightbox.module.css)",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 commit -m \"$\\(cat <<''EOF''\nUse real property photos and fix lightbox flicker\n\nReplace picsum.photos placeholders with 15 uploaded property photos\nserved from public/photos/. Fix crossfade flicker by keeping the\noutgoing image at full opacity behind the incoming fade-in, so the\ndark backdrop never bleeds through mid-transition.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git -C /Users/kori/claude-projects/photoplan-2026v1 checkout -- .)",
+      "WebSearch",
+      "WebFetch(domain:rapidapi.com)",
+      "WebFetch(domain:mixedanalytics.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(npx tsc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(du:*)",
+      "Bash(node scripts/optimize-photos.mjs:*)"
+    ]
+  }
+}
