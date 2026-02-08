@@ -35,6 +35,7 @@ export function PhotoGrid({ photos, onPhotoClick, photoRefs }: PhotoGridProps) {
           src={photos[0].fullUrl}
           alt={photos[0].alt}
           className={styles.heroImg}
+          fetchPriority="high"
         />
         <span className={styles.heroCaption}>{photos[0].alt}</span>
       </button>
@@ -44,6 +45,7 @@ export function PhotoGrid({ photos, onPhotoClick, photoRefs }: PhotoGridProps) {
             photo={photo}
             onClick={() => onPhotoClick(i + 1)}
             buttonRef={refCallback(photoRefs, i + 1)}
+            eager={i < 4}
           />
         </div>
       ))}

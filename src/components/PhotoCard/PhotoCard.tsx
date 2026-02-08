@@ -6,9 +6,10 @@ interface PhotoCardProps {
   photo: Photo;
   onClick: () => void;
   buttonRef?: React.Ref<HTMLButtonElement>;
+  eager?: boolean;
 }
 
-export function PhotoCard({ photo, onClick, buttonRef }: PhotoCardProps) {
+export function PhotoCard({ photo, onClick, buttonRef, eager }: PhotoCardProps) {
   const [loaded, setLoaded] = useState(false);
 
   return (
@@ -22,7 +23,7 @@ export function PhotoCard({ photo, onClick, buttonRef }: PhotoCardProps) {
       <img
         src={photo.thumbUrl}
         alt={photo.alt}
-        loading="lazy"
+        loading={eager ? "eager" : "lazy"}
         className={`${styles.image} ${loaded ? styles.imageLoaded : ""}`}
         onLoad={() => setLoaded(true)}
       />

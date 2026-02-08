@@ -36,6 +36,7 @@ function App() {
               src={TOUR_URL}
               title="3D Tour"
               allowFullScreen
+              loading="lazy"
             />
           </div>
         </div>
