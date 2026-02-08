@@ -24,12 +24,26 @@ function refCallback(
 export function PhotoGrid({ photos, onPhotoClick, photoRefs }: PhotoGridProps) {
   return (
     <section className={styles.grid} aria-label="Property photos">
-      {photos.map((photo, i) => (
+      <button
+        className={styles.hero}
+        onClick={() => onPhotoClick(0)}
+        ref={refCallback(photoRefs, 0)}
+        type="button"
+        style={{ aspectRatio: undefined }}
+      >
+        <img
+          src={photos[0].fullUrl}
+          alt={photos[0].alt}
+          className={styles.heroImg}
+        />
+        <span className={styles.heroCaption}>{photos[0].alt}</span>
+      </button>
+      {photos.slice(1).map((photo, i) => (
         <div key={photo.id}>
           <PhotoCard
             photo={photo}
-            onClick={() => onPhotoClick(i)}
-            buttonRef={refCallback(photoRefs, i)}
+            onClick={() => onPhotoClick(i + 1)}
+            buttonRef={refCallback(photoRefs, i + 1)}
           />
         </div>
       ))}
