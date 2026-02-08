@@ -21,8 +21,8 @@ export function Footer() {
       <div className={styles.deliverables}>
         <span className={styles.deliverable}>&#10003; 27 HD Photos</span>
         <span className={styles.deliverable}>&#10003; 3D Interactive Tour</span>
-        <span className={styles.deliverable}>&#10003; 3 Virtual Stagings</span>
-        <span className={styles.deliverable}>&#10003; Floor Plan</span>
+        <span className={styles.deliverable}>&#10003; Virtual Staging</span>
+        <span className={styles.deliverable}>&#10003; Floor Plans</span>
       </div>
     </footer>
   );
