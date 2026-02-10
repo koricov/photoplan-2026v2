@@ -24,6 +24,11 @@ const VALID_STYLES = new Set([
   "standard",
 ]);
 
+const ALLOWED_ORIGINS = [
+  "https://photoplan-2026v2.vercel.app",
+  "https://photoplan-2026v2-kori-covrigarus-projects.vercel.app",
+];
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -38,6 +43,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   if (!image_url || typeof image_url !== "string") {
     return res.status(400).json({ error: "image_url is required" });
+  }
+
+  const isAllowedOrigin = ALLOWED_ORIGINS.some((origin) => image_url.startsWith(origin + "/"));
+  if (!isAllowedOrigin) {
+    return res.status(403).json({ error: "image_url must be from an allowed domain" });
   }
   if (!room_type || !VALID_ROOM_TYPES.has(room_type)) {
     return res.status(400).json({ error: "Invalid room_type" });
